@@ -1,6 +1,8 @@
 {
   "modules_path": "modules",
   "modules": [
-    "static_file"
+    "request_reader",
+    "static_file",
+    "request_writer"
   ]
 }

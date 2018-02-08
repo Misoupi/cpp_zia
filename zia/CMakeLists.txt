@@ -34,5 +34,6 @@ if (MSVC)
             RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}/bin"
             LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin"
             PDB_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin")
-endif()
+endif ()
+
 add_subdirectory(modules)

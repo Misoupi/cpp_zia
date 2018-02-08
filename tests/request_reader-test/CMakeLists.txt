@@ -1,0 +1,7 @@
+set(API_PATH ${CMAKE_SOURCE_DIR}/api)
+include_directories(${API_PATH})
+set(SOURCES request_reader-test.cpp)
+CREATE_UNIT_TEST(request_reader-test Core: "${SOURCES}")
+target_include_directories(request_reader-test PRIVATE ${CMAKE_SOURCE_DIR}/zia/utils)
+target_link_libraries(request_reader-test Core::Lib)
+add_dependencies(request_reader-test request_reader)
