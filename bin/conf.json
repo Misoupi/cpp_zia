@@ -1,5 +1,6 @@
 {
-    "modules_path": "lib",
-    "modules": [
-    ]
+  "modules_path": "modules",
+  "modules": [
+    "static_file"
+  ]
 }

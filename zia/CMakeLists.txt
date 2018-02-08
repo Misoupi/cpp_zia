@@ -4,6 +4,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 
 set(API_PATH ${CMAKE_SOURCE_DIR}/api)
 include_directories(${API_PATH})
+include_directories(${CMAKE_SOURCE_DIR})
 include_directories(${CMAKE_SOURCE_DIR}/vendor/json/single_include)
 
 set(API_SOURCES
@@ -27,3 +28,11 @@ set(ZIA_SOURCES
 add_executable(zia ${ZIA_SOURCES})
 
 target_link_libraries(zia Core::Lib Core::Log)
+if (MSVC)
+    set_target_properties(zia PROPERTIES
+            RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_SOURCE_DIR}/bin"
+            RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}/bin"
+            LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin"
+            PDB_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin")
+endif()
+add_subdirectory(modules)
