@@ -26,7 +26,6 @@ include(${ZIA_MODULE_PATH}/${PROJECT_NAME}.cmake)
 
 ##! Project Options
 option(ZIA_BUILD_TESTS "Build tests of the zia project" OFF)
-option(ZIA_BUILD_DEMO "Build the demo of the zia project" OFF)
 
 add_subdirectory(zia)
 
@@ -34,9 +33,3 @@ add_subdirectory(zia)
 if (ZIA_BUILD_TESTS)
     add_subdirectory(tests)
 endif ()
-
-##! Demo project, contains all the documented examples.
-if (ZIA_BUILD_DEMO)
-    set(ZIA_DEMO_PATH ${CMAKE_SOURCE_DIR}/demo)
-    add_subdirectory(demo)
-endif()
