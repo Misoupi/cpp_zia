@@ -23,10 +23,14 @@ namespace zia::module
                 http.resp.headers.emplace("Content-Length", "0");
                 return true;
             }
+            if (_map.find(fs::path(http.req.uri).extension().string()) == _map.end()) {
+                http.resp.headers["Content-Type"] = _map[""];
+            } else
+                http.resp.headers["Content-Type"] = _map[fs::path(http.req.uri).extension().string()];
             http.resp.status = zia::api::http::common_status::ok;
             std::ifstream ifs(http.req.uri);
             std::vector<char> v{std::istreambuf_iterator<char>(ifs),
-                      std::istreambuf_iterator<char>()};
+                                std::istreambuf_iterator<char>()};
             for (auto cur : v) {
                 http.resp.body.push_back(std::byte(cur));
             }
