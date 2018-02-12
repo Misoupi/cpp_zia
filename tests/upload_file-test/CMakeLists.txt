@@ -1,0 +1,6 @@
+set(API_PATH ${CMAKE_SOURCE_DIR}/api)
+include_directories(${API_PATH})
+set(SOURCES upload_file-test.cpp)
+CREATE_UNIT_TEST(upload_file-test Core: "${SOURCES}")
+target_link_libraries(upload_file-test Core::Lib)
+add_dependencies(upload_file-test upload_file)
