@@ -10,7 +10,7 @@
 
 namespace fs = std::experimental::filesystem;
 
-namespace zia::module
+namespace zia::modules
 {
     class StaticFile : public zia::api::Module
     {

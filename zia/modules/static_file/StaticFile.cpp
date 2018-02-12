@@ -8,7 +8,7 @@
 #include <iterator>
 #include <iostream>
 
-namespace zia::module
+namespace zia::modules
 {
     bool StaticFile::config([[maybe_unused]] const api::Conf &conf)
     {
@@ -41,8 +41,8 @@ namespace zia::module
 
     zia::api::Module *create() noexcept
     {
-        return new zia::module::StaticFile;
+        return new zia::modules::StaticFile;
     }
 }
 
-lib_alias_function(zia::module::create, create);
+lib_alias_function(zia::modules::create, create);
