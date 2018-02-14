@@ -32,6 +32,15 @@ bool zia::Core::loadModules() noexcept
         }
     }
     _log(logging::Info) << "Successfully loaded " << _creators.size() << " modules" << std::endl;
+
+    try {
+        const std::string &moduleName = std::get<std::string>(_conf["module_net"].v);
+        _netCreator = lib::getSymbol<NetModuleCreator>(modulesPath / fs::path(moduleName), "create");
+    } catch (const std::exception &e) {
+        _log(logging::Error) << "Unable to load the network module: " << e.what() << std::endl;
+        return false;
+    }
+    _log(logging::Info) << "Successfully loaded the network module" << std::endl;
     return true;
 }
 
@@ -42,5 +51,6 @@ bool zia::Core::configureModules() noexcept
         if (!_modules.back()->config(_conf))
             return false;
     }
-    return true;
+    _net.reset((*_netCreator)());
+    return _net->config(_conf);
 }

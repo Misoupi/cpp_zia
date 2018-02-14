@@ -30,7 +30,15 @@ namespace zia
         bool run() noexcept
         {
             _log(logging::Info) << "Starting the Zia..." << std::endl;
-            return true;
+            return _net->run([this](api::Net::Raw buf, api::NetInfo info) {
+                api::HttpDuplex http;
+
+                http.raw_req = std::move(buf);
+                for (auto &curModule : _modules) {
+                    curModule->exec(http);
+                }
+                _net->send(info.sock, http.raw_resp);
+            });
         }
 
     private:
@@ -40,6 +48,9 @@ namespace zia
         using ModuleCreator = zia::api::Module *(*)();
         std::vector<lib::Symbol<ModuleCreator>> _creators;
         std::vector<std::unique_ptr<zia::api::Module>> _modules;
+        using NetModuleCreator = zia::api::Net *(*)();
+        lib::Symbol<NetModuleCreator> _netCreator;
+        std::unique_ptr<zia::api::Net> _net;
     };
 }
 

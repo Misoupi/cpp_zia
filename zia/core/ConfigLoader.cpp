@@ -68,9 +68,13 @@ bool zia::ConfigLoader::loadFromFile(const fs::path &path) noexcept
 
     if (!ifs.is_open())
         return false;
-    nlohmann::json json;
-    ifs >> json;
-    _conf = extractObject(json);
+    try {
+        nlohmann::json json;
+        ifs >> json;
+        _conf = extractObject(json);
+    } catch ([[maybe_unused]] const std::exception &e) {
+        return false;
+    }
     return true;
 }
 
