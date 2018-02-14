@@ -16,7 +16,7 @@ namespace zia::modules
 
     static std::string versionToString(api::http::Version version) noexcept
     {
-        std::unordered_map<api::http::Version, std::string> conversions{
+        static std::unordered_map<api::http::Version, std::string> conversions{
             {api::http::Version::unknown,  "Unknown"},
             {api::http::Version::http_0_9, "HTTP/0.9"},
             {api::http::Version::http_1_0, "HTTP/1.0"},
@@ -31,6 +31,7 @@ namespace zia::modules
     {
         std::ostringstream oss;
         api::HttpResponse &resp = http.resp;
+        http.resp.version = api::http::Version::http_1_1;
         api::Net::Raw &data = http.raw_resp;
 
         oss << versionToString(resp.version) << " ";
