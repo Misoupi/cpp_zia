@@ -4,5 +4,7 @@
     "request_reader",
     "static_file",
     "request_writer"
-  ]
+  ],
+  "module_net": "http_network",
+  "port": 31337
 }

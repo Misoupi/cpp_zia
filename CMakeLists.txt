@@ -27,6 +27,9 @@ include(${ZIA_MODULE_PATH}/${PROJECT_NAME}.cmake)
 ##! Project Options
 option(ZIA_BUILD_TESTS "Build tests of the zia project" OFF)
 
+#add_definitions(-DLOGGER_DISABLE_ALL)
+add_definitions(-DLOGGER_THREAD_SAFE)
+
 add_subdirectory(zia)
 
 ##! Project Tests
