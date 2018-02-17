@@ -13,8 +13,8 @@
 #include <boost/enable_shared_from_this.hpp>
 #include <boost/make_shared.hpp>
 #include <api/net.h>
-#include "HTTPLengthExtractor.hpp"
-#include "WeakCallback.hpp"
+#include <utils/WeakCallback.hpp>
+#include <utils/HTTPLengthExtractor.hpp>
 
 namespace asio = boost::asio;
 using tcp = asio::ip::tcp;

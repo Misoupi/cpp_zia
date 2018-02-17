@@ -6,7 +6,7 @@
 #include <gtest/gtest.h>
 #include <api/net.h>
 #include <utils/BufferUtils.hpp>
-#include <HTTPLengthExtractor.hpp>
+#include <utils/HTTPLengthExtractor.hpp>
 
 TEST(HTTPLengthExtractor, Basic)
 {

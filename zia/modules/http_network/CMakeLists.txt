@@ -1,7 +1,4 @@
 add_library(http_network SHARED
-        WeakCallback.hpp
-        Automaton.hpp
-        HTTPLengthExtractor.hpp
         HTTPConnection.hpp
         RoundRobinIOContextPool.cpp
         RoundRobinIOContextPool.hpp
@@ -22,5 +19,5 @@ set_target_properties(http_network
         RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}/modules"
         )
 
-target_link_libraries(http_network Core::Log Core::Lib Boost::thread Boost::system)
+target_link_libraries(http_network Core::Log Core::Lib Zia::Utils Boost::thread Boost::system)
 target_include_directories(http_network PRIVATE ${CMAKE_SOURCE_DIR}/zia/utils)

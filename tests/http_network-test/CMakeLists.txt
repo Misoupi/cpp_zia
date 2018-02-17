@@ -6,5 +6,5 @@ target_include_directories(http_network-test PRIVATE
         ${CMAKE_SOURCE_DIR}/zia/utils
         ${CMAKE_SOURCE_DIR}/zia/modules/http_network
         )
-target_link_libraries(http_network-test Core::Lib)
+target_link_libraries(http_network-test Core::Lib Zia::Utils)
 add_dependencies(http_network-test http_network)

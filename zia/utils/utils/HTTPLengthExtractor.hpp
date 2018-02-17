@@ -7,7 +7,7 @@
 
 #include <unordered_map>
 #include <functional>
-#include "Automaton.hpp"
+#include <utils/Automaton.hpp>
 
 class HTTPLengthExtractor
 {
