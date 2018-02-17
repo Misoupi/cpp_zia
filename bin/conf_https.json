@@ -6,7 +6,9 @@
     "upload_file",
     "request_writer"
   ],
-  "module_net": "http_network",
-  "port": 31337,
+  "module_net": "http_ssl_network",
+  "port": 31338,
+  "ssl_key": "bin/privkey.pem",
+  "ssl_cert": "bin/fullchain.pem",
   "root_directory": "/"
 }
