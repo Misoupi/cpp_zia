@@ -170,6 +170,7 @@ namespace zia
             if (!ec)
                 netInfo.ip.str = endpoint.address().to_string();
             netInfo.sock = reinterpret_cast<ConnectionID>(this);
+            netInfo.start = std::chrono::steady_clock::now();
             return netInfo;
         }
 
