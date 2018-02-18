@@ -2,6 +2,7 @@
   "modules_path": "modules",
   "modules": [
     "request_reader",
+    "request_logger",
     "static_file",
     "upload_file",
     "request_writer"
