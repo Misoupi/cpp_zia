@@ -17,11 +17,11 @@ using tcp = asio::ip::tcp;
 
 namespace zia::modules
 {
-    class HttpNetwork : public api::Net
+    class HTTPNetwork : public api::Net
     {
     public:
-        HttpNetwork() noexcept;
-        ~HttpNetwork() override = default;
+        HTTPNetwork() noexcept;
+        ~HTTPNetwork() override = default;
         bool config(const api::Conf &conf) override;
         bool run(Callback cb) override;
         bool send(api::ImplSocket *sock, const Raw &resp) override;

@@ -2,8 +2,8 @@ add_library(http_network SHARED
         HTTPConnection.hpp
         RoundRobinIOContextPool.cpp
         RoundRobinIOContextPool.hpp
-        HttpNetwork.cpp
-        HttpNetwork.hpp
+        HTTPNetwork.cpp
+        HTTPNetwork.hpp
         )
 
 find_package(Boost 1.66 COMPONENTS system thread REQUIRED)

@@ -4,7 +4,7 @@
 
 #include <iostream>
 #include <core/lib/Alias.hpp>
-#include "HttpNetwork.hpp"
+#include "HTTPNetwork.hpp"
 
 namespace zia::api
 {
@@ -15,7 +15,7 @@ namespace zia::api
 
 namespace zia::modules
 {
-    HttpNetwork::HttpNetwork() noexcept : _iosPool(6u),
+    HTTPNetwork::HTTPNetwork() noexcept : _iosPool(6u),
                                           _sigSet(_iosPool.getContext(), SIGINT, SIGTERM),
                                           _acceptor(_iosPool.getContext())
     {
@@ -26,7 +26,7 @@ namespace zia::modules
         return false;                                                       \
     }
 
-    bool HttpNetwork::_setupAcceptor() noexcept
+    bool HTTPNetwork::_setupAcceptor() noexcept
     {
         boost::system::error_code ec;
 
@@ -46,30 +46,30 @@ namespace zia::modules
 
 #undef fail_if
 
-    void HttpNetwork::_handleRequest(const boost::system::error_code &ec, Net::Raw raw, api::NetInfo info)
+    void HTTPNetwork::_handleRequest(const boost::system::error_code &ec, Net::Raw raw, api::NetInfo info)
     {
         if (!ec) {
             _reqCallback(std::move(raw), std::move(info));
             ConnectionID id = info.sock;
-            _connectedClients[id]->readRequest(boost::bind(&HttpNetwork::_handleRequest, this, _1, _2, _3));
+            _connectedClients[id]->readRequest(boost::bind(&HTTPNetwork::_handleRequest, this, _1, _2, _3));
         } else {
             ConnectionID id = info.sock;
             _connectedClients.erase(id);
         }
     }
 
-    void HttpNetwork::_handleAccept(const boost::system::error_code &ec) noexcept
+    void HTTPNetwork::_handleAccept(const boost::system::error_code &ec) noexcept
     {
         if (!ec) {
             _log(logging::Debug) << "Received a new connection" << std::endl;
             auto id = reinterpret_cast<ConnectionID>(_nextConn.get());
             auto pair = _connectedClients.emplace(id, HTTPConnection::Pointer(_nextConn.release())).first;
-            pair->second->readRequest(boost::bind(&HttpNetwork::_handleRequest, this, _1, _2, _3));
+            pair->second->readRequest(boost::bind(&HTTPNetwork::_handleRequest, this, _1, _2, _3));
         }
         _startAcceptor();
     }
 
-    void HttpNetwork::_startAcceptor() noexcept
+    void HTTPNetwork::_startAcceptor() noexcept
     {
         _nextConn.reset(new HTTPConnection(_iosPool.getContext()));
         _acceptor.async_accept(_nextConn->socket(), [this](const boost::system::error_code &ec) {
@@ -77,7 +77,7 @@ namespace zia::modules
         });
     }
 
-    bool HttpNetwork::config(const zia::api::Conf &conf)
+    bool HTTPNetwork::config(const zia::api::Conf &conf)
     {
         auto it = conf.find("port");
 
@@ -88,7 +88,7 @@ namespace zia::modules
         return true;
     }
 
-    bool HttpNetwork::run(api::Net::Callback cb)
+    bool HTTPNetwork::run(api::Net::Callback cb)
     {
         _reqCallback = std::move(cb);
         _sigSet.async_wait([this](const boost::system::error_code &, int) {
@@ -102,9 +102,8 @@ namespace zia::modules
         return true;
     }
 
-    bool HttpNetwork::send(ConnectionID id, const api::Net::Raw &buffer)
+    bool HTTPNetwork::send(ConnectionID id, const api::Net::Raw &buffer)
     {
-        _log(logging::Debug) << "Writing" << std::endl;
         auto ptr = _connectedClients[id];
         //TODO: compare performance with asynchronous writes
         boost::system::error_code ec;
@@ -117,7 +116,7 @@ namespace zia::modules
         return true;
     }
 
-    bool HttpNetwork::stop()
+    bool HTTPNetwork::stop()
     {
         _iosPool.stop();
         return true;
@@ -125,7 +124,7 @@ namespace zia::modules
 
     api::Net *create() noexcept
     {
-        return new HttpNetwork;
+        return new HTTPNetwork;
     }
 }
 
