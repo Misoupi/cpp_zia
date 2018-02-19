@@ -1,0 +1,7 @@
+set(API_PATH ${CMAKE_SOURCE_DIR}/api)
+include_directories(${API_PATH})
+set(SOURCES response_writer-test.cpp)
+CREATE_UNIT_TEST(response_writer-test Core: "${SOURCES}")
+target_include_directories(response_writer-test PRIVATE ${CMAKE_SOURCE_DIR}/zia/utils)
+target_link_libraries(response_writer-test Core::Lib)
+add_dependencies(response_writer-test response_writer)

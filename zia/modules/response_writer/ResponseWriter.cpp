@@ -5,11 +5,11 @@
 #include <sstream>
 #include <core/lib/Alias.hpp>
 #include <utils/BufferUtils.hpp>
-#include "RequestWriter.hpp"
+#include "ResponseWriter.hpp"
 
 namespace zia::modules
 {
-    bool RequestWriter::config([[maybe_unused]] const zia::api::Conf &conf)
+    bool ResponseWriter::config([[maybe_unused]] const zia::api::Conf &conf)
     {
         return true;
     }
@@ -27,7 +27,7 @@ namespace zia::modules
         return conversions[version];
     }
 
-    bool RequestWriter::exec(zia::api::HttpDuplex &http)
+    bool ResponseWriter::exec(zia::api::HttpDuplex &http)
     {
         std::ostringstream oss;
         api::HttpResponse &resp = http.resp;
@@ -50,7 +50,7 @@ namespace zia::modules
 
     api::Module *create() noexcept
     {
-        return new RequestWriter;
+        return new ResponseWriter;
     }
 }
 

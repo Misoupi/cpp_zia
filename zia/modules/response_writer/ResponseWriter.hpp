@@ -9,10 +9,10 @@
 
 namespace zia::modules
 {
-    class RequestWriter : public api::Module
+    class ResponseWriter : public api::Module
     {
     public:
-        ~RequestWriter() override = default;
+        ~ResponseWriter() override = default;
         bool config(const api::Conf &conf) override;
         bool exec(api::HttpDuplex &http) override;
     };

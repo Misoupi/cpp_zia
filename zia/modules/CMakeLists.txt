@@ -1,6 +1,6 @@
 add_subdirectory(static_file)
 add_subdirectory(request_reader)
-add_subdirectory(request_writer)
+add_subdirectory(response_writer)
 add_subdirectory(upload_file)
 add_subdirectory(http_network)
 add_subdirectory(request_logger)
