@@ -2,6 +2,8 @@
   "modules_path": "modules",
   "modules": [
     "request_reader",
+    "request_logger",
+    "uri_rewriter",
     "static_file",
     "upload_file",
     "request_writer"
@@ -10,5 +12,9 @@
   "port": 31338,
   "ssl_key": "bin/privkey.pem",
   "ssl_cert": "bin/fullchain.pem",
-  "root_directory": "/"
+  "root_directory": "zia-demo-site",
+  "domain": "localhost:31338",
+  "subdomains": {
+    "doc": "/doc"
+  }
 }

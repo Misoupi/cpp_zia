@@ -3,11 +3,16 @@
   "modules": [
     "request_reader",
     "request_logger",
+    "uri_rewriter",
     "static_file",
     "upload_file",
     "request_writer"
   ],
   "module_net": "http_network",
   "port": 31337,
-  "root_directory": "/"
+  "root_directory": "zia-demo-site",
+  "domain": "localhost:31337",
+  "subdomains": {
+    "doc": "/doc"
+  }
 }

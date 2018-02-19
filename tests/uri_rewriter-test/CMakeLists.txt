@@ -1,0 +1,6 @@
+set(API_PATH ${CMAKE_SOURCE_DIR}/api)
+include_directories(${API_PATH})
+set(SOURCES uri_rewriter-test.cpp)
+CREATE_UNIT_TEST(uri_rewriter-test Core: "${SOURCES}")
+target_link_libraries(uri_rewriter-test Core::Lib)
+add_dependencies(uri_rewriter-test uri_rewriter)
