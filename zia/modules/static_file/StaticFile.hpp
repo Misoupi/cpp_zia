@@ -20,6 +20,7 @@ namespace zia::modules
         bool exec(api::HttpDuplex &http) override;
 
     private:
+        fs::path _root;
         using FileExtension = std::string;
         using MimeType = std::string;
         using FileExtensionMap = std::unordered_map<FileExtension, MimeType>;
