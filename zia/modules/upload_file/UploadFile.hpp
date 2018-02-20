@@ -17,6 +17,9 @@ namespace zia::modules
     public:
         bool config(const api::Conf &conf) override;
         bool exec(api::HttpDuplex &http) override;
+
+    private:
+        fs::path _root;
     };
 }
 
