@@ -6,6 +6,8 @@
     "uri_rewriter",
     "static_file",
     "upload_file",
+    "error_page_maker",
+    "response_gzip_compressor",
     "request_writer"
   ],
   "module_net": "http_ssl_network",
@@ -13,6 +15,7 @@
   "ssl_key": "bin/privkey.pem",
   "ssl_cert": "bin/fullchain.pem",
   "root_directory": "zia-demo-site",
+  "default_file": "index.html",
   "domain": "localhost:31338",
   "subdomains": {
     "doc": "/doc"

@@ -1,0 +1,7 @@
+set(API_PATH ${CMAKE_SOURCE_DIR}/api)
+include_directories(${API_PATH})
+set(SOURCES response_gzip_compressor-test.cpp)
+CREATE_UNIT_TEST(response_gzip_compressor-test Core: "${SOURCES}")
+target_include_directories(response_gzip_compressor-test PRIVATE ${CMAKE_SOURCE_DIR}/zia/utils)
+target_link_libraries(response_gzip_compressor-test Core::Lib)
+add_dependencies(response_gzip_compressor-test response_gzip_compressor)

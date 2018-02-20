@@ -6,11 +6,14 @@
     "uri_rewriter",
     "static_file",
     "upload_file",
+    "error_page_maker",
+    "response_gzip_compressor",
     "request_writer"
   ],
   "module_net": "http_network",
   "port": 31337,
   "root_directory": "zia-demo-site",
+  "default_file": "index.html",
   "domain": "localhost:31337",
   "subdomains": {
     "doc": "/doc"
