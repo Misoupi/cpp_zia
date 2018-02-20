@@ -51,9 +51,11 @@ namespace zia::modules
         if (!ec) {
             _reqCallback(std::move(raw), std::move(info));
             ConnectionID id = info.sock;
+            std::scoped_lock<std::mutex> lock{_connectedClientsMutex};
             _connectedClients[id]->readRequest(boost::bind(&HTTPNetwork::_handleRequest, this, _1, _2, _3));
         } else {
             ConnectionID id = info.sock;
+            std::scoped_lock<std::mutex> lock{_connectedClientsMutex};
             _connectedClients.erase(id);
         }
     }
@@ -63,6 +65,7 @@ namespace zia::modules
         if (!ec) {
             _log(logging::Debug) << "Received a new connection" << std::endl;
             auto id = reinterpret_cast<ConnectionID>(_nextConn.get());
+            std::scoped_lock<std::mutex> lock{_connectedClientsMutex};
             auto pair = _connectedClients.emplace(id, HTTPConnection::Pointer(_nextConn.release())).first;
             pair->second->readRequest(boost::bind(&HTTPNetwork::_handleRequest, this, _1, _2, _3));
         }
@@ -104,13 +107,17 @@ namespace zia::modules
 
     bool HTTPNetwork::send(ConnectionID id, const api::Net::Raw &buffer)
     {
-        auto ptr = _connectedClients[id];
+        HTTPConnection::Pointer ptr;
+        {
+            std::scoped_lock<std::mutex> lock{_connectedClientsMutex};
+            ptr = _connectedClients[id];
+        }
         //TODO: compare performance with asynchronous writes
         boost::system::error_code ec;
         size_t written = 0;
         while (written < buffer.size() && !ec) {
             auto buf = asio::buffer(buffer.data() + written, buffer.size() - written);
-            written += ptr->socket().write_some(buf, ec);;
+            written += ptr->socket().write_some(buf, ec);
         }
         _log(logging::Debug) << "Done writing: " << ec.message() << std::endl;
         return true;

@@ -44,6 +44,7 @@ namespace zia::modules
 
         using ConnectionID = api::ImplSocket *;
         std::unordered_map<ConnectionID, HTTPConnection::Pointer> _connectedClients;
+        std::mutex _connectedClientsMutex;
     };
 }
 
