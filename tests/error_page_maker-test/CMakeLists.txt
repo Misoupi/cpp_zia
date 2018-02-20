@@ -1,0 +1,6 @@
+set(API_PATH ${CMAKE_SOURCE_DIR}/api)
+include_directories(${API_PATH})
+set(SOURCES error_page_maker-test.cpp)
+CREATE_UNIT_TEST(error_page_maker-test Core: "${SOURCES}")
+target_link_libraries(error_page_maker-test Core::Lib)
+add_dependencies(error_page_maker-test error_page_maker)
