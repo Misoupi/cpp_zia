@@ -19,6 +19,15 @@ namespace zia::modules
             _root = std::get<std::string>(it->second.v);
         } else
             _root = "";
+
+        it = conf.find("default_file");
+        if (it != conf.end()) {
+            if (!std::holds_alternative<std::string>(it->second.v))
+                return false;
+            _defaultFile = std::get<std::string>(it->second.v);
+        } else
+            _defaultFile = "";
+
         return true;
     }
 
@@ -26,6 +35,9 @@ namespace zia::modules
     {
         if (http.req.method == zia::api::http::Method::get) {
             fs::path realPath = _root / fs::path(http.req.uri);
+
+            if (fs::is_directory(realPath))
+                realPath /= _defaultFile;
 
             if (!fs::exists(realPath)) {
                 http.resp.status = zia::api::http::common_status::not_found;
