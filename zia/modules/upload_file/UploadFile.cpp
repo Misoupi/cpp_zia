@@ -12,18 +12,26 @@ namespace zia::modules
 {
     bool UploadFile::config([[maybe_unused]] const api::Conf &conf)
     {
+        auto it = conf.find("root_directory");
+        if (it != conf.end()) {
+            if (!std::holds_alternative<std::string>(it->second.v))
+                return false;
+            _root = std::get<std::string>(it->second.v);
+        } else
+            _root = "";
         return true;
     }
 
     bool UploadFile::exec(api::HttpDuplex &http)
     {
         if (http.req.method == zia::api::http::Method::put) {
+            fs::path uploadPath = _root / http.req.uri;
             http.resp.headers.emplace("Content-Length", "0");
             http.resp.status = zia::api::http::common_status::ok;
-            if (!fs::exists(http.req.uri))
+            if (!fs::exists(uploadPath))
                 http.resp.status = zia::api::http::common_status::created;
 
-            std::ofstream ofs(http.req.uri, std::ios_base::trunc);
+            std::ofstream ofs(uploadPath.string(), std::ios_base::trunc);
             if (ofs.fail()) {
                 http.resp.status = zia::api::http::common_status::unauthorized;
                 return true;

@@ -8,6 +8,8 @@
 #include <core/lib/Lib.hpp>
 #include <api/module.h>
 
+using namespace zia;
+
 class UploadFileCreate : public ::testing::Test
 {
     void SetUp() override
@@ -28,22 +30,58 @@ TEST_F(UploadFileCreate, Create)
     const std::string upStr = "<html>\r\n<header>\r\n    <title> this is title </title>\r\n</header>\r\n<body> Hello World ! </body>\r\n</html>";
 
     zia::api::HttpDuplex duplex;
-    duplex.req.uri = (fs::current_path() / "create.html").string();
+    duplex.req.uri = "create.html";
     duplex.req.method = zia::api::http::Method::put;
     for (auto cur : upStr) {
         duplex.req.body.push_back(static_cast<std::byte>(cur));
     }
+
+    api::Conf conf;
+    api::ConfValue value;
+    value.v = std::string(fs::current_path().string());
+    conf.emplace("root_directory", std::move(value));
+
     auto modulesPath = fs::current_path().parent_path() / "modules" / "upload_file";
     using ModuleCreator = zia::api::Module *(*)();
     lib::Symbol<ModuleCreator> symbol = lib::getSymbol<ModuleCreator>(modulesPath, "create");
     std::unique_ptr<zia::api::Module> ptr((*symbol)());
 
     ASSERT_FALSE(fs::exists(fs::current_path() / "create.html"));
+    ASSERT_TRUE(ptr->config(conf));
     ASSERT_TRUE(ptr->exec(duplex));
     ASSERT_TRUE(fs::exists(fs::current_path() / "create.html"));
     std::ifstream ifs(fs::current_path() / "create.html");
     const std::string resStr{std::istreambuf_iterator<char>(ifs),
                        std::istreambuf_iterator<char>()};
+    ASSERT_EQ(upStr, resStr);
+    ASSERT_EQ(duplex.resp.status, zia::api::http::common_status::created);
+}
+
+TEST_F(UploadFileCreate, CreateWithoutConf)
+{
+    const std::string upStr = "<html>\r\n<header>\r\n    <title> this is title </title>\r\n</header>\r\n<body> Hello World ! </body>\r\n</html>";
+
+    zia::api::HttpDuplex duplex;
+    duplex.req.uri = (fs::current_path() / "create.html").string();
+    duplex.req.method = zia::api::http::Method::put;
+    for (auto cur : upStr) {
+        duplex.req.body.push_back(static_cast<std::byte>(cur));
+    }
+
+    auto modulesPath = fs::current_path().parent_path() / "modules" / "upload_file";
+    using ModuleCreator = zia::api::Module *(*)();
+    lib::Symbol<ModuleCreator> symbol = lib::getSymbol<ModuleCreator>(modulesPath, "create");
+    std::unique_ptr<zia::api::Module> ptr((*symbol)());
+
+    api::Conf conf;
+
+    ASSERT_FALSE(fs::exists(fs::current_path() / "create.html"));
+    ASSERT_TRUE(ptr->config(conf));
+    ASSERT_TRUE(ptr->exec(duplex));
+    ASSERT_TRUE(fs::exists(fs::current_path() / "create.html"));
+    std::ifstream ifs(fs::current_path() / "create.html");
+    const std::string resStr{std::istreambuf_iterator<char>(ifs),
+                             std::istreambuf_iterator<char>()};
     ASSERT_EQ(upStr, resStr);
     ASSERT_EQ(duplex.resp.status, zia::api::http::common_status::created);
 }
@@ -73,7 +111,7 @@ TEST_F(UploadFileTrunc, Trunc)
     const std::string upStr = "<html>\r\n<header>\r\n    <title> This is title </title>\r\n</header>\r\n<body> Hello World ! </body>\r\n</html>";
 
     zia::api::HttpDuplex duplex;
-    duplex.req.uri = (fs::current_path() / "trunc.html").string();
+    duplex.req.uri = "trunc.html";
     duplex.req.method = zia::api::http::Method::put;
     for (auto cur : upStr) {
         duplex.req.body.push_back(static_cast<std::byte>(cur));
@@ -84,7 +122,13 @@ TEST_F(UploadFileTrunc, Trunc)
     lib::Symbol<ModuleCreator> symbol = lib::getSymbol<ModuleCreator>(modulesPath, "create");
     std::unique_ptr<zia::api::Module> ptr((*symbol)());
 
+    api::Conf conf;
+    api::ConfValue value;
+    value.v = std::string(fs::current_path().string());
+    conf.emplace("root_directory", std::move(value));
+
     ASSERT_TRUE(fs::exists(fs::current_path() / "trunc.html"));
+    ASSERT_TRUE(ptr->config(conf));
     ASSERT_TRUE(ptr->exec(duplex));
     ASSERT_TRUE(fs::exists(fs::current_path() / "trunc.html"));
     std::ifstream ifs(fs::current_path() / "trunc.html");
@@ -129,7 +173,7 @@ TEST_F(UploadFileDenied, Denied)
     const std::string upStr = "<html>\r\n<header>\r\n    <title> This is title </title>\r\n</header>\r\n<body> Hello World ! </body>\r\n</html>";
 
     zia::api::HttpDuplex duplex;
-    duplex.req.uri = (fs::current_path() / "denied.html").string();
+    duplex.req.uri = "denied.html";
     duplex.req.method = zia::api::http::Method::put;
     for (auto cur : upStr) {
         duplex.req.body.push_back(static_cast<std::byte>(cur));
@@ -140,7 +184,13 @@ TEST_F(UploadFileDenied, Denied)
     lib::Symbol<ModuleCreator> symbol = lib::getSymbol<ModuleCreator>(modulesPath, "create");
     std::unique_ptr<zia::api::Module> ptr((*symbol)());
 
+    api::Conf conf;
+    api::ConfValue value;
+    value.v = std::string(fs::current_path().string());
+    conf.emplace("root_directory", std::move(value));
+
     ASSERT_TRUE(fs::exists(fs::current_path() / "denied.html"));
+    ASSERT_TRUE(ptr->config(conf));
     ASSERT_TRUE(ptr->exec(duplex));
     ASSERT_TRUE(fs::exists(fs::current_path() / "denied.html"));
     std::ifstream ifs(fs::current_path() / "denied.html");
