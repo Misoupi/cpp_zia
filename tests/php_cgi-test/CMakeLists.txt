@@ -1,0 +1,7 @@
+set(API_PATH ${CMAKE_SOURCE_DIR}/api)
+include_directories(${API_PATH})
+set(SOURCES php_cgi-test.cpp)
+CREATE_UNIT_TEST(php_cgi-test Core: "${SOURCES}")
+target_include_directories(php_cgi-test PRIVATE ${CMAKE_SOURCE_DIR}/zia/utils)
+target_link_libraries(php_cgi-test Core::Lib)
+add_dependencies(php_cgi-test php_cgi)
