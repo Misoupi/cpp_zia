@@ -4,11 +4,11 @@
     "request_reader",
     "request_logger",
     "uri_rewriter",
-    "static_file",
     "upload_file",
+    "static_file",
     "error_page_maker",
     "response_gzip_compressor",
-    "request_writer"
+    "response_writer"
   ],
   "module_net": "http_ssl_network",
   "port": 31338,

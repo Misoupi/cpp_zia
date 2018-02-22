@@ -33,7 +33,7 @@ namespace zia::modules
 
     bool StaticFile::exec(api::HttpDuplex &http)
     {
-        if (http.req.method == zia::api::http::Method::get) {
+        if (http.resp.status == 0 && http.req.method == zia::api::http::Method::get) {
             fs::path realPath = _root / fs::path(http.req.uri);
 
             if (fs::is_directory(realPath))

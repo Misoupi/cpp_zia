@@ -11,7 +11,7 @@ TEST(StaticFile, Basic)
 {
     fs::copy(fs::current_path().parent_path() / "tests/staticfile-test/hello.html", fs::current_path(),
              fs::copy_options::overwrite_existing);
-    zia::api::HttpDuplex duplex;
+    zia::api::HttpDuplex duplex{};
     duplex.req.uri = (fs::current_path() / "hello.html").string();
     std::ifstream ifs((fs::current_path() / "hello.html").string());
     std::string str((std::istreambuf_iterator<char>(ifs)),
@@ -36,7 +36,7 @@ TEST(StaticFile, Basic)
 
 TEST(StaticFile, NonExistent)
 {
-    zia::api::HttpDuplex duplex;
+    zia::api::HttpDuplex duplex{};
     duplex.req.uri = (fs::current_path() / "nonexistent.html").string();
     duplex.req.method = zia::api::http::Method::get;
 
@@ -55,7 +55,7 @@ TEST(StaticFile, BinaryFile)
 {
     fs::copy(fs::current_path().parent_path() / "tests/staticfile-test/binary-file", fs::current_path(),
              fs::copy_options::overwrite_existing);
-    zia::api::HttpDuplex duplex;
+    zia::api::HttpDuplex duplex{};
     duplex.req.uri = (fs::current_path() / "binary-file").string();
     std::ifstream ifs((fs::current_path() / "binary-file").string());
     std::string str((std::istreambuf_iterator<char>(ifs)),

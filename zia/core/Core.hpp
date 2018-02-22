@@ -31,7 +31,7 @@ namespace zia
         {
             _log(logging::Info) << "Starting the Zia..." << std::endl;
             return _net->run([this](api::Net::Raw buf, api::NetInfo info) {
-                api::HttpDuplex http;
+                api::HttpDuplex http{};
 
                 http.raw_req = std::move(buf);
                 for (auto &curModule : _modules) {
