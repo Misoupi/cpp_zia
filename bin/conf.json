@@ -5,6 +5,7 @@
     "request_logger",
     "uri_rewriter",
     "upload_file",
+    "php_cgi",
     "static_file",
     "error_page_maker",
     "response_gzip_compressor",
@@ -17,5 +18,6 @@
   "domain": "localhost:31337",
   "subdomains": {
     "doc": "/doc"
-  }
+  },
+  "php_cgi_exe": "/usr/bin/php-cgi"
 }
