@@ -130,6 +130,9 @@ namespace zia::modules
 
     bool PHPCGI::exec(api::HttpDuplex &http)
     {
+        if (http.resp.status != 0)
+            return true;
+
         InvocationOrErrCode req = _prepareInvocation(http.req);
         if (std::holds_alternative<ErrorCode>(req)) {
             http.resp.status = std::get<ErrorCode>(req);

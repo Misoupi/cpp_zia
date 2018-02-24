@@ -19,7 +19,8 @@
   "default_file": "index.html",
   "domain": "localhost:31338",
   "subdomains": {
-    "doc": "/doc"
+    "doc": "/doc",
+    "ppt": "/ppt"
   },
   "php_cgi_exe": "/usr/bin/php-cgi"
 }

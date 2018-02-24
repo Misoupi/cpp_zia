@@ -24,7 +24,7 @@ namespace zia::modules
 
     bool ErrorPageMaker::exec(api::HttpDuplex &http)
     {
-        if (!nonErrorStatus.count(http.resp.status)) {
+        if (http.resp.status != 0 && !nonErrorStatus.count(http.resp.status)) {
                 std::string statusMsg = _statusToString(http.resp.status);
                 std::ostringstream body;
                 body << "<html>\r\n"
