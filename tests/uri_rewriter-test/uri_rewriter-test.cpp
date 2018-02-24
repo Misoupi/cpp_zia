@@ -27,12 +27,12 @@ TEST(URIRewriter, Subdomain)
 
     ASSERT_TRUE(uriRewriter->config(conf));
 
-    api::HttpDuplex duplex;
+    api::HttpDuplex duplex{};
     duplex.req.uri = "/dir/lol.html";
     duplex.req.headers.emplace("Host", "doc.lalala.lol");
     ASSERT_TRUE(uriRewriter->exec(duplex));
-    ASSERT_EQ(duplex.req.headers["Host"], "lalala.lol");
-    ASSERT_EQ(duplex.req.uri, "/doc/dir/lol.html");
+    ASSERT_EQ(duplex.resp.status, api::http::common_status::moved_permanently);
+    ASSERT_EQ(duplex.resp.headers["Location"], "http://lalala.lol/doc/dir/lol.html");
 }
 
 TEST(URIRewriter, UnknownDomain)

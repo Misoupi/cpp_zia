@@ -2,7 +2,6 @@
 // Created by doom on 18/02/18.
 //
 
-#include <iostream>
 #include <core/lib/Alias.hpp>
 #include "URIRewriter.hpp"
 
@@ -38,8 +37,13 @@ namespace zia::modules
         if (domainIt != header.end()) {
             auto subdomainIt = _subdomains.find(domainIt->second);
             if (subdomainIt != _subdomains.end()) {
-                header["Host"] = _domain;
-                http.req.uri.insert(http.req.uri.begin(), subdomainIt->second.begin(), subdomainIt->second.end());
+                if (http.req.headers["Host"].compare(0, 8, "https://") == 0)
+                    http.resp.headers["Location"] = "https://" + _domain + subdomainIt->second + http.req.uri;
+                else
+                    http.resp.headers["Location"] = "http://" + _domain + subdomainIt->second + http.req.uri;
+                http.resp.headers["Content-Length"] = "0";
+                http.resp.status = api::http::common_status::moved_permanently;
+                http.resp.reason = "Redirecting subdomain";
             }
         }
         return true;
